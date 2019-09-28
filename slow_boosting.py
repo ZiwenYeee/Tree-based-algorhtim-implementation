@@ -1,3 +1,8 @@
+from joblib import Parallel, delayed
+import gc
+import numpy as np
+import pandas as pd
+
 class GBM_Node(object):
     def __init__(self, **kwargs):
         self.children_left = kwargs.get('children_left')
@@ -10,9 +15,6 @@ class GBM_Node(object):
         self.node_sample_weight = kwargs.get("node_sample_weight")
         self.weighted_n_node_samples = kwargs.get("weighted_n_node_samples")
 
-
-from joblib import Parallel, delayed
-import gc
 
 class GBM_Tree(object):
     def __init__(self, kwargs):

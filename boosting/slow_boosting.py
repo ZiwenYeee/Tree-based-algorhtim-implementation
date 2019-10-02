@@ -190,8 +190,7 @@ class Slow_boosting(object):
         boosters = []
         best_iteration = None
         best_validation_loss = np.inf
-        print("Training until validation scores don't improve for {} rounds."
-              .format(early_stopping_round))
+        print("Training until validation scores don't improve for {} rounds.".format(early_stopping_round))
 
         for iteration in range(num_boost_round):
             scores = self.calc_data_score(X_train, boosters)

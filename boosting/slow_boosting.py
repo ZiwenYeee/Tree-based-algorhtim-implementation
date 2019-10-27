@@ -138,8 +138,9 @@ class GBM_Tree(object):
 class Slow_boosting(object):
     def __init__(self, params):
         self.learning_rate = 0.1
-        self.loss_function = None
-        self.eval_function = None
+        self.loss_function = self.likelihood_loss
+        self.eval_function = self.logloss_eval
+        self.booster = []
         self.tree_params = {
                 'lambda_T': 1,
                 'gamma' : 0,
@@ -182,7 +183,10 @@ class Slow_boosting(object):
         return logloss
     
     def pre_sorted(self, X_train):
-        return np.argsort(X_train)
+        X_sort = np.zeros(X_train.shape)
+        for i in range(X_train.shape[1]):
+            X_sort[:, i] = np.argsort(X_train[:, i])
+        return X_sort.astype(int)
     
     def train(self, X_train, y_train, X_valid = None, y_valid = None, num_boost_round = 50,
           early_stopping_round = 10, eval_rounds = 1):
@@ -209,4 +213,4 @@ class Slow_boosting(object):
             if iteration % eval_rounds == 0:
                 print("[{}]    Train's loss: {:.6f}, Valid's loss: {}"
                       .format(iteration, train_loss, valid_loss_str))
-        return boosters
+        self.booster = booster
